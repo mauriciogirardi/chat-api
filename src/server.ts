@@ -109,7 +109,3 @@ io.on('connection', (socket) => {
     })
   })
 })
-
-app.get('/', (req, res) => {
-  return res.send({ message: 'This is api chat' })
-})
