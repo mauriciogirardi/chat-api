@@ -39,6 +39,29 @@ io.on('connection', (socket) => {
   })
 
   socket.on(
+    'add-user-chat',
+    ({
+      chats,
+      userId,
+      type,
+    }: {
+      chats: ChatType[]
+      userId: string
+      type: 'chat' | 'group'
+    }) => {
+      if (type === 'chat') {
+        io.to(userId).emit('add-new-user-chat', chats)
+      } else {
+        chats.forEach((chat) => {
+          chat.users.forEach((user) => {
+            io.to(user._id).emit('add-new-user-chat', chats)
+          })
+        })
+      }
+    },
+  )
+
+  socket.on(
     'read-all-messages',
     ({
       chatId,
