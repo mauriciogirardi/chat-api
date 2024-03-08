@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use(
   cors({
-    origin: ['http://localhost:3333', 'https://chat-girardi.vercel.app/'],
+    origin: ['*'],
   }),
 )
 
