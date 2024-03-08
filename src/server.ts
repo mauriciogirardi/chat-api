@@ -13,11 +13,7 @@ import { socketHandler } from './socketHandler'
 connectMongoDB()
 app.use(express.json())
 
-app.use(
-  cors({
-    origin: ['*'],
-  }),
-)
+app.use(cors())
 
 app.use('/users', routerUser)
 app.use('/chats', routerChat)
