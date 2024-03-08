@@ -17,26 +17,24 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/env/index.ts
-var env_exports = {};
-__export(env_exports, {
-  env: () => env
+// src/error/errorHandler.ts
+var errorHandler_exports = {};
+__export(errorHandler_exports, {
+  errorHandler: () => errorHandler
 });
-module.exports = __toCommonJS(env_exports);
-var import_config = require("dotenv/config");
+module.exports = __toCommonJS(errorHandler_exports);
 var import_zod = require("zod");
-var envSchema = import_zod.z.object({
-  NODE_ENV: import_zod.z.enum(["dev", "test", "production"]).default("dev"),
-  PORT: import_zod.z.coerce.number().default(3333),
-  MONGO_URL: import_zod.z.string()
-});
-var _env = envSchema.safeParse(process.env);
-if (_env.success === false) {
-  console.error("Invalid environment variables", _env.error.format());
-  throw new Error("Invalid environment variables.");
-}
-var env = _env.data;
+var errorHandler = (error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+  if (error instanceof import_zod.z.ZodError) {
+    res.status(400).send({ error: "Validations error", message: error.errors[0].message });
+  } else {
+    res.status(500).send({ error: "Internal server error!" });
+  }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  env
+  errorHandler
 });

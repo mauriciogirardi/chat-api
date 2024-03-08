@@ -17,26 +17,48 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/env/index.ts
-var env_exports = {};
-__export(env_exports, {
-  env: () => env
+// src/models/userModel.ts
+var userModel_exports = {};
+__export(userModel_exports, {
+  UserModel: () => UserModel
 });
-module.exports = __toCommonJS(env_exports);
-var import_config = require("dotenv/config");
-var import_zod = require("zod");
-var envSchema = import_zod.z.object({
-  NODE_ENV: import_zod.z.enum(["dev", "test", "production"]).default("dev"),
-  PORT: import_zod.z.coerce.number().default(3333),
-  MONGO_URL: import_zod.z.string()
-});
-var _env = envSchema.safeParse(process.env);
-if (_env.success === false) {
-  console.error("Invalid environment variables", _env.error.format());
-  throw new Error("Invalid environment variables.");
+module.exports = __toCommonJS(userModel_exports);
+var import_mongoose = require("mongoose");
+var userSchema = new import_mongoose.Schema(
+  {
+    clerkUserId: {
+      type: String,
+      require: true,
+      unique: true
+    },
+    name: {
+      type: String,
+      require: true
+    },
+    username: {
+      type: String,
+      require: true,
+      unique: true
+    },
+    email: {
+      type: String
+    },
+    profilePicture: {
+      type: String,
+      require: false
+    },
+    bio: {
+      type: String,
+      require: false
+    }
+  },
+  { timestamps: true }
+);
+if (import_mongoose.models && import_mongoose.models.users) {
+  (0, import_mongoose.deleteModel)("users");
 }
-var env = _env.data;
+var UserModel = (0, import_mongoose.model)("users", userSchema);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  env
+  UserModel
 });
