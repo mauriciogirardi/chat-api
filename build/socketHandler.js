@@ -1,10 +1,12 @@
 "use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -13,37 +15,17 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-
-// src/app.ts
-var import_express = __toESM(require("express"));
-var app = (0, import_express.default)();
-
-// src/env/index.ts
-var import_config = require("dotenv/config");
-var import_zod = require("zod");
-var envSchema = import_zod.z.object({
-  NODE_ENV: import_zod.z.enum(["dev", "test", "production"]).default("dev"),
-  PORT: import_zod.z.coerce.number().default(3333)
-});
-var _env = envSchema.safeParse(process.env);
-if (_env.success === false) {
-  console.error("Invalid environment variables", _env.error.format());
-  throw new Error("Invalid environment variables.");
-}
-var env = _env.data;
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/socketHandler.ts
+var socketHandler_exports = {};
+__export(socketHandler_exports, {
+  socketHandler: () => socketHandler
+});
+module.exports = __toCommonJS(socketHandler_exports);
 var import_socket = require("socket.io");
-function socketHandler(server2) {
-  const io = new import_socket.Server(server2, {
+function socketHandler(server) {
+  const io = new import_socket.Server(server, {
     cors: {
       origin: "*"
     }
@@ -122,9 +104,7 @@ function socketHandler(server2) {
     });
   });
 }
-
-// src/server.ts
-var server = app.listen(env.PORT, () => {
-  console.info(`Server is running port ${env.PORT}!`);
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  socketHandler
 });
-socketHandler(server);
