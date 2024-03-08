@@ -42,7 +42,7 @@ export const sendNewMessageController = async (req: Request, res: Response) => {
       lastMessageAt: new Date().toISOString(),
     })
 
-    return res.status(201).send()
+    return res.status(201).json({})
   } catch (error) {
     console.error(error)
   }
@@ -93,7 +93,7 @@ export const readAllMessagesControllers = async (
       unreadCounts: newUnreadCounts,
     })
 
-    return res.status(201).send()
+    return res.status(201).send({})
   } catch (error) {
     console.error(error)
   }
