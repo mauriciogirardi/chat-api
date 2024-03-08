@@ -1,3 +1,4 @@
+import cors from 'cors'
 import express from 'express'
 
 import { app } from './app'
@@ -11,6 +12,12 @@ import { socketHandler } from './socketHandler'
 
 connectMongoDB()
 app.use(express.json())
+
+app.use(
+  cors({
+    origin: ['http://localhost:3333', 'https://chat-girardi.vercel.app/'],
+  }),
+)
 
 app.use('/users', routerUser)
 app.use('/chats', routerChat)
